@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { nanoid } from 'nanoid';
 
 import ContactList from './components/ContsctList/ContactList';
+import SearchBox from './components/SearchBox/SearchBox';
 
 import './App.css';
 
@@ -12,6 +13,8 @@ function App() {
     { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
     { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
   ]);
+
+  const [contactName, setContactName] = useState('');
 
   const addContactHandler = ({ name, number }) => {
     const newContact = {
@@ -26,11 +29,18 @@ function App() {
     setContactList(contactList.filter((contact) => contact.id !== id));
   };
 
+  const filteredContacts = useMemo(() => {
+    return [...contactList].filter((contact) =>
+      contact.name.toLowerCase().includes(contactName.toLowerCase())
+    );
+  }, [contactList, contactName]);
+
   return (
     <div className="App">
       <h1>Phonebook</h1>
+      <SearchBox contactName={contactName} setContactName={setContactName} />
       <ContactList
-        contactList={contactList}
+        contactList={filteredContacts}
         deleteContact={deleteContactHandler}
       />
     </div>
