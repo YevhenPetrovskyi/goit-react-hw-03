@@ -1,17 +1,33 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useId } from 'react';
+import iziToast from 'izitoast';
+
+import normalizeName from '../helpers/nameNormalize';
 import { contactSchema } from '../helpers/contactSchema';
+
+import 'izitoast/dist/css/iziToast.min.css';
 
 const initialValues = {
   name: '',
   number: '',
 };
 
-function ContactForm({ addContact }) {
+function ContactForm({ addContact, contactList }) {
   const nameFieldId = useId();
   const numberFieldId = useId();
 
   const submitHandler = (values, { resetForm }) => {
+    const correctName = normalizeName(values.name);
+
+    if (contactList.some((contact) => contact.name === correctName)) {
+      iziToast.error({
+        title: 'Error',
+        message: `${correctName} is already in contact!`,
+        position: 'topCenter',
+      });
+      return;
+    }
+
     addContact(values);
     resetForm();
   };

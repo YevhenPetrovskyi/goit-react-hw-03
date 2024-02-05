@@ -44,7 +44,7 @@ function App() {
   return (
     <div className="App">
       <h1>Phonebook</h1>
-      <ContactForm addContact={addContactHandler} />
+      <ContactForm addContact={addContactHandler} contactList={contactList} />
       <SearchBox contactName={contactName} setContactName={setContactName} />
       <ContactList
         contactList={filteredContacts}
