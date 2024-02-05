@@ -1,9 +1,10 @@
 .contact {
+  font-size: 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  width: 350px;
+  width: 200px;
   padding: 10px;
   border: 1px solid #232323;
   border-radius: 5px;
