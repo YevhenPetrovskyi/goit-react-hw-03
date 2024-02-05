@@ -1,7 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
 import { nanoid } from 'nanoid';
-import normalizeName from './components/helpers/nameNormalize';
-import normalizePhoneNumber from './components/helpers/normalizePhoneNumber';
 
 import ContactList from './components/ContsctList/ContactList';
 import SearchBox from './components/SearchBox/SearchBox';
@@ -24,8 +22,8 @@ function App() {
 
   const addContactHandler = ({ name, number }) => {
     const newContact = {
-      name: normalizeName(name),
-      number: normalizePhoneNumber(number),
+      name,
+      number,
       id: nanoid(),
     };
     setContactList([...contactList, newContact]);

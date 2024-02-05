@@ -1,4 +1,5 @@
 import { useId } from 'react';
+import styles from './SearchBox.module.css';
 
 function SearchBox({ contactName, setContactName }) {
   const contactFilterId = useId();
@@ -8,7 +9,7 @@ function SearchBox({ contactName, setContactName }) {
   };
 
   return (
-    <div>
+    <div className={styles.searchBox}>
       <label htmlFor={contactFilterId}>Find contacts by name</label>
       <input
         value={contactName}

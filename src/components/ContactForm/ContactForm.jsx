@@ -3,9 +3,11 @@ import { useId } from 'react';
 import iziToast from 'izitoast';
 
 import normalizeName from '../helpers/nameNormalize';
+import normalizePhoneNumber from '../helpers/normalizePhoneNumber';
 import { contactSchema } from '../helpers/contactSchema';
 
 import 'izitoast/dist/css/iziToast.min.css';
+import styles from './ContactForm.module.css';
 
 const initialValues = {
   name: '',
@@ -16,19 +18,23 @@ function ContactForm({ addContact, contactList }) {
   const nameFieldId = useId();
   const numberFieldId = useId();
 
-  const submitHandler = (values, { resetForm }) => {
-    const correctName = normalizeName(values.name);
+  const submitHandler = ({ name, number }, { resetForm }) => {
+    const correctName = normalizeName(name);
+    const correctNumber = normalizePhoneNumber(number);
 
     if (contactList.some((contact) => contact.name === correctName)) {
       iziToast.error({
         title: 'Error',
         message: `${correctName} is already in contact!`,
-        position: 'topCenter',
+        position: 'topRight',
       });
       return;
     }
 
-    addContact(values);
+    addContact({
+      name: correctName,
+      number: correctNumber,
+    });
     resetForm();
   };
 
@@ -38,14 +44,22 @@ function ContactForm({ addContact, contactList }) {
       onSubmit={submitHandler}
       validationSchema={contactSchema}
     >
-      <Form>
-        <label htmlFor={nameFieldId}>Name</label>
-        <Field type="text" name="name" id={nameFieldId} />
-        <ErrorMessage name="name" as="span" />
+      <Form className={styles.form}>
+        <div className={styles.inputContainer}>
+          <label htmlFor={nameFieldId}>Name</label>
+          <Field type="text" name="name" id={nameFieldId} />
+          <ErrorMessage className={styles.errorMessage} name="name" as="span" />
+        </div>
 
-        <label htmlFor={numberFieldId}>Number</label>
-        <Field type="tel" name="number" id={numberFieldId} />
-        <ErrorMessage name="number" as="span" />
+        <div className={styles.inputContainer}>
+          <label htmlFor={numberFieldId}>Number</label>
+          <Field type="tel" name="number" id={numberFieldId} />
+          <ErrorMessage
+            className={styles.errorMessage}
+            name="number"
+            as="span"
+          />
+        </div>
 
         <button type="submit">Add contact</button>
       </Form>
